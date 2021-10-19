@@ -11,13 +11,23 @@ public class PlayerScript : MonoBehaviour
 
     public Text score;
 
+    public Text life;
+
+    private int lifeValue = 3;
+
     private int scoreValue = 0;
+
+    public Text winText;
+
+    //private int winValue;
 
     // Start is called before the first frame update
     void Start()
     {
         rd2d = GetComponent<Rigidbody2D>();
-        score.text = scoreValue.ToString();
+        score.text = ("Score: " + scoreValue.ToString());
+        life.text = ("Lives: " + lifeValue.ToString());
+        winText.text = "";
     }
 
     // Update is called once per frame
@@ -37,8 +47,18 @@ public class PlayerScript : MonoBehaviour
         if(collision.collider.tag == "Coin")
         {
             scoreValue += 1;
-            score.text = scoreValue.ToString();
+            score.text = ("Score: " + scoreValue.ToString());
             Destroy(collision.collider.gameObject);
+        }
+        if(collision.collider.tag == "Enemy")
+        {
+            lifeValue -= 1;
+            life.text = lifeValue.ToString();
+            Destroy(collision.collider.gameObject);
+        }
+        if(scoreValue == 8)
+        {
+            winText.text = "Congrats, you win! Game created by Jack Barnes.";
         }
     }
 
@@ -48,7 +68,7 @@ public class PlayerScript : MonoBehaviour
         {
             if(Input.GetKey(KeyCode.W))
             {
-                rd2d.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
+                rd2d.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
             }
         }
     }
